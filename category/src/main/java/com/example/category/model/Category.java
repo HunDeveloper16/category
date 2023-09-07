@@ -2,6 +2,7 @@ package com.example.category.model;
 
 import com.example.category.dto.CategoryRequest;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,14 +25,27 @@ public class Category {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent")
-    private Category parent;
+    @JoinColumn(name = "upCategory")
+    private Category upCategory;
 
     @Column(name = "depth")
     private Long depth;
 
-    @OneToMany(mappedBy = "parent")
+    @Column(name = "expsrYn")
+    private String exposureYn;
+
+    @BatchSize(size = 10)
+    @OneToMany(mappedBy = "upCategory")
+    @Builder.Default
     private List<Category> children = new ArrayList<>();
 
-
+    /**
+     * 연관관계 편의 메서드입니다.
+     *
+     * @param upCategory 부모 카테고리 객체
+     */
+    public void changeUpCategory(Category upCategory){
+        this.upCategory = upCategory;
+        upCategory.children.add(this);
+    }
 }

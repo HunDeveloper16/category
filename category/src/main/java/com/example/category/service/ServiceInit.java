@@ -3,38 +3,45 @@ package com.example.category.service;
 import com.example.category.model.Category;
 import com.example.category.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ServerErrorException;
+
+import javax.persistence.Transient;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class ServiceInit implements InitializingBean {
 
     private final CategoryRepository categoryRepository;
-
 
     @Override
     public void afterPropertiesSet() throws Exception {
         init();
     }
 
+    @Transactional
     public void init(){
 
-        categoryRepository.save(Category.builder()
-                .id(1L)
+        log.info("=================== Create StartValue ====================");
+        Category category1 = Category.builder()
                 .name("도서")
-                .parent(null)
+                .upCategory(null)
                 .depth(1L)
-                .build()
-        );
-
-        categoryRepository.save(Category.builder()
-                .id(2L)
+                .build();
+        Category category2 = Category.builder()
                 .name("전공서적")
-                .parent(categoryRepository.findById(1L).get())
+                .upCategory(null)
                 .depth(2L)
-                .build()
-        );
+                .build();
+
+        categoryRepository.save(category1);
+        category2.changeUpCategory(category1);
+        categoryRepository.save(category2);
+        log.info("=================== StartValue Setting Complete ====================");
 
     }
 }
