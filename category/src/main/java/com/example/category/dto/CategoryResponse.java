@@ -25,7 +25,7 @@ public class CategoryResponse {
                 category.getName(),
                 category.getDepth(),
                 category.getChildren().stream().map(CategoryResponse::from).collect(Collectors.toList()),
-                category.getUpCategory()==null ? null : category.getUpCategory().getId() // 부모 키값 리턴
+                category.getUpCategory() != null ? category.getUpCategory().getId() : null
         );
     }
 

@@ -20,7 +20,6 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-
     @GetMapping("/index")
     public String getCatagory(Model model){
 

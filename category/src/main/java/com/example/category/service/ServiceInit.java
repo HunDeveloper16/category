@@ -24,7 +24,7 @@ public class ServiceInit implements InitializingBean {
     }
 
     @Transactional
-    public void init(){
+    public void init() {
 
         log.info("=================== Create StartValue ====================");
         Category category1 = Category.builder()
@@ -37,10 +37,23 @@ public class ServiceInit implements InitializingBean {
                 .upCategory(null)
                 .depth(2L)
                 .build();
+        Category category3 = Category.builder()
+                .name("물리학개론")
+                .upCategory(null)
+                .depth(3L)
+                .build();
+        Category category4 = Category.builder()
+                        .name("전자")
+                .upCategory(null)
+                .depth(1L)
+                .build();
 
         categoryRepository.save(category1);
         category2.changeUpCategory(category1);
         categoryRepository.save(category2);
+        category3.changeUpCategory(category2);
+        categoryRepository.save(category3);
+        categoryRepository.save(category4);
         log.info("=================== StartValue Setting Complete ====================");
 
     }

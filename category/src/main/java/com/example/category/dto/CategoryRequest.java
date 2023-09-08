@@ -11,8 +11,4 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CategoryRequest {
 
-    private String name;
-    private Long upDsplyCtgry; // null이거나 부모를 가져옴
-    private Long depth;  // hidden
-
 }

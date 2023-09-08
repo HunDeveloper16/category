@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
 </head>
+
 <body>
 <h1>Category Tree</h1>
 <ul th:if="${categories}">
     <li th:each="category : ${categories}">
         <!-- 카테고리 이름 출력 -->
         <span th:text="${category.name}"></span>
-
         <!-- 하위 카테고리가 있는 경우, 재귀적으로 호출 -->
         <ul th:if="${category.children}">
-            <!-- 프래그먼트 포함 -->
-            <div th:replace="category-tree-fragment :: category-tree-node(children = ${category.children})"></div>
+            <li th:replace="recursive-list.html :: recursive-list(categories=${category.children})"></li>
         </ul>
     </li>
 </ul>
+
 </body>
+
 </html>
