@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RegistCategory</title>
+
+<!--    <div id="myModal" class="modal">-->
+<!--        <div class="modal-content">-->
+<!--            <span class="close">&times;</span>-->
+<!--            <p id="errorMessage"></p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+</head>
+<body>
+    <h1> 카테고리 등록 </h1>
+    <form th:object="${categoryRequest}" th:action="@{/category}" method="post">
+        <label for="name">카테고리 명</label>
+        <input type="text" id="name" th:field="*{name}" required>
+        <br>
+        <label for="upCategoryId">부모 카테고리 일련번호:</label>
+        <input type="text" id="upCategoryId" th:field="*{upCategoryId}">
+        <br>
+        <label for="exposureYn">노출 여부:</label>
+        <input type="text" id="exposureYn" th:field="*{exposureYn}">
+        <br>
+        <button type="submit">등록</button>
+    </form>
+    <a th:href="@{/category}">목록 화면으로 돌아가기</a>
+</body>
+</html>
