@@ -1,4 +1,4 @@
-##📎 Category
+## 📎Category
 무한 Depth를 가지는 카테고리 구조를 JPA로 생성해보았습니다.
 
 ## 요구사항
