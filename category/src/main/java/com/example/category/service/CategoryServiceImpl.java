@@ -2,8 +2,6 @@ package com.example.category.service;
 
 import com.example.category.codeconst.COMMON_YN;
 import com.example.category.dto.CategoryRequest;
-import com.example.category.exception.CustomException;
-import com.example.category.exception.ErrorCode;
 import com.example.category.model.Category;
 import com.example.category.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -165,20 +162,18 @@ public class CategoryServiceImpl implements CategoryService{
 
     /**
      * 미노출 카테고리의 중복 데이터를 삭제하여 새로운 리스트를 반환합니다.
+     * <p> 재귀 호출로 같은 객체 탐색시 탐색 depth가 높을경우 덮혀 씌워지게 하고, depth가 2미만인 데이터를 결과 데이터에 넣어줍니다. </p>
      *
      * @param request 요청 카테고리 리스트 객체
      */
     private List<Category> removeDuplicates(List<Category> request){
         Map<Long,Long> categoryMapByIdAndDepth = new HashMap<>();
+        List<Category> result = new ArrayList<>();
 
-        // Map에 각 아이디를 저장합니다.
         request.forEach(category -> categoryMapByIdAndDepth.put(category.getId(), 1L));
 
-        // 재귀 호출로 중복 데이터(depth가 2이상)를 추출합니다.
         request.forEach(category -> categoryDepthFirstSearch(category,1L,categoryMapByIdAndDepth));
 
-        // depth가 2미만인 데이터를 결과 데이터에 넣어줍니다.
-        List<Category> result = new ArrayList<>();
         request.forEach(category -> {
             if (categoryMapByIdAndDepth.get(category.getId()) < 2) {
                 result.add(category);

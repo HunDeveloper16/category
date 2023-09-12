@@ -2,9 +2,7 @@ package com.example.category.dto;
 
 import com.example.category.codeconst.COMMON_YN;
 import com.example.category.model.Category;
-import lombok.*;
-
-import javax.persistence.*;
+import lombok.Data;
 
 @Data
 public class CategoryRequest {
