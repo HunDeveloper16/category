@@ -1,5 +1,6 @@
 package com.example.category.model;
 
+import com.example.category.codeconst.COMMON_YN;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,6 +42,10 @@ public class Category {
     @Builder.Default
     private List<Category> children = new ArrayList<>();
 
+    public void setExposureYn(String exposureYn){
+        this.exposureYn = exposureYn;
+    }
+
     /**
      * 연관관계 편의 메서드입니다.
      *
@@ -49,5 +54,17 @@ public class Category {
     public void changeUpCategory(Category upCategory){
         this.upCategory = upCategory;
         upCategory.children.add(this);
+    }
+
+    public boolean isExistChildren(){
+        return children != null && !children.isEmpty();
+    }
+
+    public boolean isExistUpCategory(){
+        return upCategory!=null;
+    }
+
+    public boolean isExposureY(){
+        return exposureYn.equals(COMMON_YN.Y.name());
     }
 }

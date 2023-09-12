@@ -27,4 +27,8 @@ public interface CategoryService {
      */
     Category getCategory(Long id);
 
+    /**
+     * 카테고리 노출 상태를 변경합니다
+     */
+    void updateCategory(Long id,String exposureYn);
 }

@@ -3,18 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
 </head>
 <body>
 <h1>Category Detail</h1>
 <!-- 카테고리 정보 표시 -->
 <ul>
-    <li>아이디: <span th:text="${category.id}"></span></li>
-    <li>이름: <span th:text="${category.name}"></span></li>
-    <li>depth: <span th:text="${category.depth}"></span></li>
-    <li>Up Category ID: <span th:text="${category.parentId}"></span></li>
-    <li>노출 여부: <span th:text="${category.exposureYn}"></span></li>
+    <li>아이디: <span th:text="${category.id}" class="category-info" data-field="id"></span></li>
+    <li>이름: <span th:text="${category.name}" class="category-info" data-field="name"></span></li>
+    <li>depth: <span th:text="${category.depth}" class="category-info" data-field="depth"></span></li>
+    <li>Up Category ID: <span th:text="${category.parentId}" class="category-info" data-field="parentId"></span></li>
+    <li>노출 여부: <span th:text="${category.exposureYn}" class="category-info" data-field="exposureYn"></span></li>
 </ul>
-<!-- 이전 페이지로 돌아가는 링크 -->
-<a href="/category">Back to Category List</a>
+
+<!-- 수정 폼 -->
+<form th:action="@{'/category/update/' + ${category.id}}" method="post" class="edit-form">
+    <label for="edit-exposureYn">노출 여부 수정: </label>
+    <input type="text" id="edit-exposureYn" name="exposureYn" th:value="${category.exposureYn}" >
+    <button type="submit">저장</button>
+</form>
+
+<br>
+<a th:href="@{/category}">카테고리 목록 이동</a>
+
+<script>
+    const categoryInfoElements = document.querySelectorAll('.category-info');
+    const editForm = document.querySelector('.edit-form');
+    const editField = document.getElementById('edit-exposureYn');
+
+    // 클릭 이벤트 리스너 등록
+    categoryInfoElements.forEach(function (element) {
+        element.addEventListener('click', function () {
+            const field = element.getAttribute('data-field');
+            const value = element.textContent;
+
+            // 수정 폼 필드 설정
+            editField.value = value;
+            editForm.action = '/updateCategory/' + categoryInfoElements[0].textContent;
+
+            // 수정 폼 보이기
+            editForm.style.display = 'block';
+        });
+    });
+</script>
+
 </body>
 </html>

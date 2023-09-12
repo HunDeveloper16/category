@@ -78,5 +78,14 @@ public class CategoryController {
         return "/detail";
     }
 
+    /**
+     * 노출 상태를 변경하고 목록 페이지를 redirect합니다.
+     */
+    @PostMapping("/update/{id}")
+    public String updateCategory(@PathVariable Long id, @RequestParam("exposureYn") String exposureYn){
+        categoryService.updateCategory(id,exposureYn);
+
+        return "redirect:/category";
+    }
 
 }

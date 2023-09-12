@@ -11,10 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -80,6 +78,92 @@ public class CategoryServiceImpl implements CategoryService{
 
 
     /**
+     * 카테고리 수정
+     *
+     * @param id 카테고리 아이디
+     */
+    @Transactional
+    @Override
+    public void updateCategory(Long id,String exposureYn) {
+        log.info("카테고리의 노출 상태를 수정합니다.");
+        Category category = getCategory(id);
+        category.setExposureYn(exposureYn);
+
+        checkParentCategory(category);
+
+        checkChildrenCategory(category);
+    }
+
+
+    /**
+     * 하위 카테고리를 모두 체크하여 미노출일 경우 하위 카테고리들을 미노출로 변경합니다.
+     *
+     * @param category 변경할 카테고리 객체
+     */
+    private void checkChildrenCategory(Category category){
+        Set<Category> children = new HashSet<>();
+        if(category.isExistChildren()){
+            category.getChildren().forEach(cg -> getChildrenCategories(cg.getId(),children));
+        }
+
+        if(!category.isExposureY()){
+            children.forEach(cg -> {
+                if(cg.getExposureYn().equals(COMMON_YN.Y.name())){cg.setExposureYn(COMMON_YN.N.name());}
+            });
+        }
+
+    }
+
+
+    /**
+     * 부모 카테고리를 모두 체크하여 미노출일 경우 미노출로 변경합니다.
+     *
+     * @param category 변경할 카테고리 객체
+     */
+    private void checkParentCategory(Category category) {
+
+        if (category.isExistUpCategory()) {
+            Set<Category> categorySet = new HashSet<>();
+            getParentCategoryIds(category.getUpCategory().getId(), categorySet);
+
+            boolean containNonExposure = categorySet.stream().anyMatch(cg -> cg.getExposureYn().equals(COMMON_YN.N.name()));
+            if (containNonExposure) {
+                category.setExposureYn(COMMON_YN.N.name());
+            }
+        }
+    }
+
+
+    /**
+     * 재귀 호출로 모든 부모 객체를 Set에 담습니다.
+     *
+     * @param id 아이디
+     * @param parents 부모 객체
+     */
+    private void getParentCategoryIds(Long id,Set<Category> parents){
+        Category category = getCategory(id);
+
+        if(category.isExistUpCategory()){
+            parents.add(category.getUpCategory());
+            getParentCategoryIds(category.getUpCategory().getId(),parents);
+        }
+    }
+
+    /**
+     * 재귀 호출로 모든 하위 객체를 Set에 담습니다.
+     *
+     */
+    private void getChildrenCategories(Long id,Set<Category> children){
+        Category category = getCategory(id);
+        children.add(category);
+
+        if(category.isExistChildren()){
+            category.getChildren().forEach(cg-> getChildrenCategories(cg.getId(), children));
+        }
+    }
+
+
+    /**
      * 미노출 카테고리의 중복 데이터를 삭제하여 새로운 리스트를 반환합니다.
      *
      * @param request 요청 카테고리 리스트 객체
@@ -119,11 +203,10 @@ public class CategoryServiceImpl implements CategoryService{
             map.put(entity.getId(),depth);
         }
         if(entity.getChildren()!=null && !entity.getChildren().isEmpty()){
-            for(Category child : entity.getChildren()){
-                if(child.getExposureYn().equals(COMMON_YN.N.name())){
-                    categoryDepthFirstSearch(child, depth+1L, map);
-                }
-            }
+            entity.getChildren().forEach(child ->{
+                if(child.getExposureYn().equals(COMMON_YN.N.name())) {
+                    categoryDepthFirstSearch(child, depth + 1L, map);
+                }});
         }
     }
 
