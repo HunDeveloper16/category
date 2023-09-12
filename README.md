@@ -1,7 +1,7 @@
 ## 📎Category
 무한 Depth를 가지는 카테고리 구조를 JPA로 생성해보았습니다.
 
-## 요구사항
+## 📌요구사항
 1. 카테고리는 자기참조 형태로 설계되어 있습니다.
 2. 카테고리 객체는 미노출과 노출 정보를 가집니다.
 
@@ -16,5 +16,5 @@ id와 depth, upCategory는 모두 Bigint type을 가지며 나머지는 Varchar(
 ![image](https://github.com/HunDeveloper16/category/assets/56526225/8fb98f2e-ef06-4053-98aa-d721d55127bb)
 
 
-## 목록에 관한 처리
+## 🔧목록에 관한 처리
 ![Uploading image.png…]()
