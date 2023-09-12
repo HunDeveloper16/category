@@ -9,9 +9,11 @@
 <h1>Category Tree</h1>
 <ul th:if="${categories}">
     <li th:each="category : ${categories}">
-        <!-- 카테고리 이름 출력 -->
-        <span th:text="${category.name}"></span>
-        <span th:text="${category.id}"></span>
+        <!-- 카테고리 이름 출력과 링크 추가 -->
+        <a th:href="@{'/category/detail/' + ${category.id}}">
+            <span th:text="${category.name}"></span>
+            <span th:text="${category.id}"></span>
+        </a>
         <!-- 하위 카테고리가 있는 경우, 재귀적으로 호출 -->
         <ul th:if="${category.children}">
             <li th:replace="recursive-list.html :: recursive-list(categories=${category.children})"></li>

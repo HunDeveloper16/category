@@ -8,10 +8,7 @@ import com.example.category.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,6 +63,19 @@ public class CategoryController {
         categoryService.registCategory(request);
 
         return "redirect:/category";
+    }
+
+
+    /**
+     * 카테고리를 상세 조회하고 조회 페이지를 호출합니다.
+     */
+    @GetMapping("/detail/{id}")
+    public String readCategory(@PathVariable("id") Long id,Model model){
+        Category category = categoryService.getCategory(id);
+
+        model.addAttribute("category",CategoryResponse.toDetail(category));
+
+        return "/detail";
     }
 
 

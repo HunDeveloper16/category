@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Category Detail</h1>
+<!-- 카테고리 정보 표시 -->
+<ul>
+    <li>아이디: <span th:text="${category.id}"></span></li>
+    <li>이름: <span th:text="${category.name}"></span></li>
+    <li>depth: <span th:text="${category.depth}"></span></li>
+    <li>Up Category ID: <span th:text="${category.parentId}"></span></li>
+    <li>노출 여부: <span th:text="${category.exposureYn}"></span></li>
+</ul>
+<!-- 이전 페이지로 돌아가는 링크 -->
+<a href="/category">Back to Category List</a>
+</body>
+</html>

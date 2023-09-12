@@ -13,7 +13,7 @@
 
 </head>
 <body>
-    <h1> 카테고리 등록 </h1>
+    <h1> Category Regist </h1>
     <form th:object="${categoryRequest}" th:action="@{/category}" method="post">
         <label for="name">카테고리 명</label>
         <input type="text" id="name" th:field="*{name}" required>

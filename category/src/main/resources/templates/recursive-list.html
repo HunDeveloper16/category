@@ -7,8 +7,10 @@
     <ul>
       <li th:each="subcategory : ${categories}">
         <!-- 카테고리 이름 출력 -->
-        <span th:text="${subcategory.name}"></span>
-        <span th:text="${subcategory.id}"></span>
+        <a th:href="@{'/category/detail/' + ${subcategory.id}}">
+          <span th:text="${subcategory.name}"></span>
+          <span th:text="${subcategory.id}"></span>
+        </a>
         <!-- 하위 카테고리가 있는 경우, 재귀적으로 호출 -->
         <ul th:if="${subcategory.children}">
           <!-- 재귀 호출 -->
